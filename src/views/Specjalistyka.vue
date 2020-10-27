@@ -1,7 +1,5 @@
 <template>
-  <!-- <div class="container"> -->
   <v-container>
-    <!-- alt-labels -->
     <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1" :editable="editable"
@@ -43,7 +41,6 @@
 
         <v-stepper-content step="2">
           <FormUsluga type="specjalistyka" title="Specjalistyka" />
-
           <div class="btns">
             <my-button
               text
@@ -58,6 +55,7 @@
               color="#20CE99"
               data-cy="next-button-step1"
               @click.native="e1 = 3"
+              :disabled="!wizyta.usluga.nazwa"
               >Dalej</my-button
             >
           </div>
@@ -95,11 +93,11 @@
   <!-- </div> -->
 </template>
 
-<script lang="typescript">
-import FormDatePicker from '../components/FormDatePicker'
-import FormUsluga from '../components/FormUsluga'
-import FormSummary from '../components/FormSummary'
-import { typWizytyConst } from '../constants/constants'
+<script>
+import FormDatePicker from '@/components/FormDatePicker'
+import FormSummary from '@/components/FormSummary'
+import FormUsluga from '@/components/FormUsluga'
+import { typWizytyConst } from '@/constants/constants'
 import apiService from '@/services/apiService.js'
 
 export default {
@@ -133,8 +131,7 @@ export default {
       }
     },
     zarejestrujWizyte(wizyta) {
-      apiService
-        .registerVisit(wizyta)
+      apiService.registerVisit(wizyta)
     }
   },
 

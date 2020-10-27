@@ -12,11 +12,18 @@
             <template v-slot:header>
               <ul class="patient__header">
                 <li>{{ rozliczenie.firma.nazwa }}</li>
-                <li class="patient__details-element">Szczegóły</li>
+                <li
+                  class="patient__details-element"
+                  :class="
+                    rozliczenie.incomplete ? 'do-rozliczenia' : 'rozliczono'
+                  "
+                >
+                  {{ rozliczenie.incomplete ? 'Do rozliczenia' : 'Rozliczono' }}
+                </li>
               </ul>
             </template>
             <v-card>
-              <div class="btns-wrapper">
+              <div v-if="rozliczenie.incomplete" class="btns-wrapper">
                 <my-button @click.native="dialog = true" color="success">
                   Wystaw fakturę
                 </my-button>
@@ -54,13 +61,22 @@
                             &nbsp; - &nbsp;
                             <span> {{ wizyta.usluga.nazwa }}</span>
                           </div>
-                          <div class="patient__checkbox">
+                          <div v-if="!wizyta.faktura" class="patient__checkbox">
                             <v-checkbox
                               v-model="selected"
                               :value="wizyta.wizytaId"
                               :label="'Zaznacz'"
                               @change="updateWizytyDoZafakturowania"
                             ></v-checkbox>
+                          </div>
+
+                          <div
+                            v-if="wizyta.faktura"
+                            class="patient__show-invoice"
+                          >
+                            <router-link :to="`/faktury/${wizyta.faktura}`"
+                              >Pokaż fakturę</router-link
+                            >
                           </div>
                         </li>
                       </ul>
@@ -228,6 +244,23 @@ export default {
       if (response.data.length) {
         this.$store.commit('GET_ALL_ROZLICZENIA_FROM_DB', response.data)
         this.rozliczenia = this.$store.getters.getAllRozliczenia
+        this.rozliczenia = this.rozliczenia.map(rozliczenie => {
+          let incomplete = false
+          rozliczenie.miesiace.map(miesiac => {
+            miesiac.pacjenci.map(pacjent => {
+              pacjent.wizyty.map(wizyta => {
+                if (!wizyta.faktura) {
+                  incomplete = true
+                }
+              })
+            })
+          })
+          return {
+            ...rozliczenie,
+            incomplete
+          }
+        })
+
         this.isLoading = false
       } else {
         this.brakDanychMessage = 'Brak danych w bazie'
@@ -250,8 +283,10 @@ export default {
         rozliczenie.miesiace.map(miesiac => {
           miesiac.pacjenci.map(pacjent => {
             pacjent.wizyty.map(wizyta => {
-              this.selected.push(wizyta.wizytaId)
-              this.doZafakturowania.wizyty = this.selected
+              if (!wizyta.faktura) {
+                this.selected.push(wizyta.wizytaId)
+                this.doZafakturowania.wizyty = this.selected
+              }
             })
           })
         })
@@ -266,13 +301,6 @@ export default {
         }
       })
     }
-  },
-  computed: {
-    // data() {
-    //   this.pacjent.wizyty.map(wizyta => {
-    //     return wizyta.dataWizyty.moment('MM-DD-YYYY')
-    //   })
-    // }
   }
 }
 </script>
@@ -297,10 +325,32 @@ export default {
   }
 }
 
+.patient {
+  &__show-invoice {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: -5px;
+  }
+  &__checkbox {
+    margin-right: -10px;
+  }
+}
+.select-all-checkbox {
+  margin-right: -10px;
+}
+
 .v-input {
   &__slot {
     display: flex;
     flex-direction: row-reverse;
   }
+}
+
+.do-rozliczenia {
+  color: #f44336;
+}
+
+.rozliczono {
+  color: #20ce99;
 }
 </style>

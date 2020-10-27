@@ -105,7 +105,7 @@
             @click="getIncompleteVisits"
             class="orzeczenia"
           >
-            Niezakończone
+            Pacjenci do uzupełnienia
             <span class="counter-badge" :style="badgeStyles">
               {{ incompleteCounter }}</span
             >
@@ -183,7 +183,7 @@
                       <li>Pesel: {{ wizyta.pacjent.pesel }}</li>
                       <li>Telefon: {{ wizyta.pacjent.numerTelefonu }}</li>
                       <li>Numer karty: {{ wizyta.pacjent.numerKarty }}</li>
-                      <li>
+                      <li v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
                         Data orzeczenia:
 
                         <v-menu
@@ -227,7 +227,9 @@
                     <ul>
                       <li>Nazwa usługi: {{ wizyta.usluga.nazwa }}</li>
                       <li>Cena: {{ wizyta.usluga.cenaZwykla }}</li>
-                      <li>Typ badań: {{ wizyta.rodzajBadan }}</li>
+                      <li v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
+                        Typ badań: {{ wizyta.rodzajBadan }}
+                      </li>
                     </ul>
                   </div>
                   <div class="wizyta__details-col" v-if="wizyta.pacjent.firma">
@@ -243,7 +245,7 @@
                     </ul>
                   </div>
                 </div>
-                <div>
+                <div v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
                   <span class="decyzja">Decyzja:</span>
                   {{ mapDecyzjaLabelToText(wizyta.pacjent.decyzja) }}
                   <v-select
@@ -295,7 +297,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
 import apiService from '@/services/apiService.js'
 import { decyzje, decyzje2 } from '@/constants/constants'
 
@@ -317,7 +319,8 @@ export default {
     brakDanychMessage: null,
     currentPage: 1,
     pageSize: 10,
-    visibleVisits: []
+    visibleVisits: [],
+    lastRequest: null
   }),
   mounted: function() {
     this.getAllWizyty()
@@ -339,12 +342,26 @@ export default {
     },
 
     submitDecyzja(pacjentID, decyzja) {
-      apiService.submitDecyzja(pacjentID, decyzja)
+      apiService.submitDecyzja(pacjentID, decyzja).then(() => {
+        this.getCounter()
+
+        if (this.lastRequest === 'GET_ALL_WIZYTY') {
+          this.getAllWizyty()
+        } else {
+          this.getIncompleteVisits()
+        }
+      })
     },
 
     submitDataOrzeczenia(pacjentID, dataOrzeczenia) {
       apiService.submitDataOrzeczenia(pacjentID, dataOrzeczenia).then(() => {
         this.getCounter()
+
+        if (this.lastRequest === 'GET_ALL_WIZYTY') {
+          this.getAllWizyty()
+        } else {
+          this.getIncompleteVisits()
+        }
       })
     },
 
@@ -361,6 +378,7 @@ export default {
     getIncompleteVisits() {
       apiService.getIncompleteVisits().then(response => {
         this.saveVisits(response)
+        this.lastRequest = 'GET_INCOMPLETE'
       })
     },
 
@@ -382,8 +400,6 @@ export default {
       })
     },
     saveVisits(response) {
-      console.log('Elooo')
-      console.log(response.data.length)
       if (response.data.length) {
         this.$store.commit('GET_ALL_WIZYTY_FROM_DB', response.data)
         this.wizyty = this.$store.getters.getAllWizyty
@@ -396,22 +412,14 @@ export default {
     getAllWizyty() {
       apiService.getWizyty().then(response => {
         this.saveVisits(response)
+        this.lastRequest = 'GET_ALL_WIZYTY'
       })
     }
   },
   computed: {
-    brakOrzeczenia() {
-      let brakOrzeczeniaCounter = 0
-      this.wizyty.map(wizyta => {
-        if (wizyta.pacjent.dataOrzeczenia) {
-          brakOrzeczeniaCounter++
-        }
-      })
-      return brakOrzeczeniaCounter
-    },
     badgeStyles() {
       return {
-        background: this.brakOrzeczenia > 0 ? 'red' : 'green'
+        background: this.incompleteCounter > 0 ? 'red' : 'green'
       }
     },
     selectedWizyty() {
@@ -445,10 +453,6 @@ export default {
 .szukajka {
   display: flex;
   padding: 0px 0px 50px;
-  /* .date-input {
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50px;
-  } */
 }
 
 .sort-btn {
@@ -510,13 +514,6 @@ export default {
   font-size: 16px;
 }
 
-.date-input {
-  .v-input__slot {
-    input {
-      padding-left: 0px !important;
-    }
-  }
-}
 .wizyta {
   &__header {
     font-size: 18px;

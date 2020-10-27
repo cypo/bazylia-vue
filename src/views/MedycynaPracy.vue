@@ -5,26 +5,19 @@
         <v-stepper-step :complete="currentStepNumber > 1" step="1"
           >Typ badań</v-stepper-step
         >
-
         <v-divider></v-divider>
-
         <v-stepper-step :complete="currentStepNumber > 2" step="2"
           >Firma</v-stepper-step
         >
-
         <v-divider></v-divider>
-
         <v-stepper-step :complete="currentStepNumber > 3" step="3"
           >Data i godzina</v-stepper-step
         >
-
         <v-divider></v-divider>
-
         <v-stepper-step :complete="currentStepNumber > 4" step="4"
           >Usługa</v-stepper-step
         >
         <v-divider></v-divider>
-
         <v-stepper-step step="5">Podsumowanie</v-stepper-step>
       </v-stepper-header>
 
@@ -45,7 +38,7 @@
               color="#20CE99"
               data-cy="next-button-step1"
               @click.native="currentStepNumber = 2"
-              :disabled="wizyta.rodzajBadan.length == 0"
+              :disabled="!wizyta.rodzajBadan"
               >Dalej</my-button
             >
           </div>
@@ -112,7 +105,7 @@
               color="#20CE99"
               data-cy="next-button-step4"
               @click.native="currentStepNumber = 5"
-              :disabled="wizyta.usluga.nazwa.length == 0"
+              :disabled="!wizyta.usluga.nazwa"
               >Dalej</my-button
             >
           </div>
@@ -159,18 +152,17 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-    <!-- <pre><code>{{wizyta}}</code></pre> -->
   </v-container>
 </template>
 
 <script>
-import FormTypeOfService from '../components/FormTypeOfService'
-import FormCompany from '../components/FormCompany'
-import FormDatePicker from '../components/FormDatePicker'
-import FormSummary from '../components/FormSummary'
-import FormUsluga from '../components/FormUsluga'
-import { typWizytyConst } from '../constants/constants'
-import apiService from '@/services/apiService.js'
+import FormTypeOfService from '@/components/FormTypeOfService'
+import FormCompany from '@/components/FormCompany'
+import FormDatePicker from '@/components/FormDatePicker'
+import FormSummary from '@/components/FormSummary'
+import FormUsluga from '@/components/FormUsluga'
+import { typWizytyConst } from '@/constants/constants'
+import apiService from '@/services/apiService'
 
 export default {
   components: {
