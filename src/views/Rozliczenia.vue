@@ -13,97 +13,10 @@
             class="rozliczenia__month"
             @click="goToMonth(miesiac)"
           >
-<<<<<<< HEAD
-            <template v-slot:header>
-              <ul class="patient__header">
-                <li>{{ rozliczenie.firma.nazwa }}</li>
-                <li
-                  class="patient__details-element"
-                  :class="
-                    rozliczenie.incomplete ? 'do-rozliczenia' : 'rozliczono'
-                  "
-                >
-                  {{ rozliczenie.incomplete ? 'Do rozliczenia' : 'Rozliczono' }}
-                </li>
-              </ul>
-            </template>
-            <v-card>
-              <div v-if="rozliczenie.incomplete" class="btns-wrapper">
-                <my-button @click.native="dialog = true" color="success">
-                  Wystaw fakturę
-                </my-button>
-                <div class="select-all-checkbox">
-                  <v-checkbox
-                    v-model="selectAll"
-                    :label="`Zaznacz wszystkie`"
-                    @change="select(rozliczenie)"
-                  ></v-checkbox>
-                </div>
-              </div>
-              <ul>
-                <li
-                  v-for="miesiac in rozliczenie.miesiace"
-                  :key="miesiac.miesiac"
-                >
-                  <h3>{{ miesiac.miesiac }}</h3>
-                  <ul>
-                    <li
-                      class="patient__list-element"
-                      v-for="(pacjent, i) in miesiac.pacjenci"
-                      :key="i"
-                    >
-                      <div>
-                        {{ pacjent.pacjent.imie }}
-                        {{ pacjent.pacjent.nazwisko }}
-                      </div>
-
-                      <ul class="patient__service">
-                        <li v-for="(wizyta, i) in pacjent.wizyty" :key="i">
-                          <div class="patient__service-desc">
-                            <span
-                              >{{ wizyta.dataWizyty | moment('MM-DD-YYYY') }}
-                            </span>
-                            &nbsp; - &nbsp;
-                            <span> {{ wizyta.usluga.nazwa }}</span>
-                          </div>
-                          <div v-if="!wizyta.faktura" class="patient__checkbox">
-                            <v-checkbox
-                              v-model="selected"
-                              :value="wizyta.wizytaId"
-                              :label="'Zaznacz'"
-                              @change="updateWizytyDoZafakturowania"
-                            ></v-checkbox>
-                          </div>
-
-                          <div
-                            v-if="wizyta.faktura"
-                            class="patient__show-invoice"
-                          >
-                            <router-link :to="`/faktury/${wizyta.faktura}`"
-                              >Pokaż fakturę</router-link
-                            >
-                          </div>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-
-                <li></li>
-              </ul>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-card-text>
-      <v-card-text v-if="brakDanychMessage">{{
-        brakDanychMessage
-      }}</v-card-text>
-=======
             <div>{{ miesiac }}</div>
           </li>
         </ul>
       </div>
->>>>>>> rozliczenia medycyna-pracy view changed to table
     </div>
   </v-container>
 </template>
@@ -147,38 +60,8 @@ export default {
     })
   },
   methods: {
-<<<<<<< HEAD
-    updateWizytyDoZafakturowania() {
-      this.doZafakturowania.wizyty = this.selected
-    },
-    select(rozliczenie) {
-      this.selected = []
-      this.doZafakturowania.wizyty = []
-      if (this.selectAll) {
-        rozliczenie.miesiace.map(miesiac => {
-          miesiac.pacjenci.map(pacjent => {
-            pacjent.wizyty.map(wizyta => {
-              if (!wizyta.faktura) {
-                this.selected.push(wizyta.wizytaId)
-                this.doZafakturowania.wizyty = this.selected
-              }
-            })
-          })
-        })
-      }
-    },
-    submitForInvoice(doZafakturowania) {
-      apiService.submitForInvoice(doZafakturowania).then(response => {
-        if (response.headers.location) {
-          this.$router.push({ path: `${response.headers.location}` })
-        } else {
-          console.error('Cos nie tak z fakturami... przepraszamy.')
-        }
-      })
-=======
     goToMonth(month) {
       this.$router.push({ path: `/rozliczenia/medycyna-pracy/${month}` })
->>>>>>> rozliczenia medycyna-pracy view changed to table
     }
   }
 }
@@ -213,24 +96,6 @@ export default {
       font-weight: bold;
     }
 
-<<<<<<< HEAD
-.patient {
-  &__show-invoice {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: -5px;
-  }
-  &__checkbox {
-    margin-right: -10px;
-  }
-}
-.select-all-checkbox {
-  margin-right: -10px;
-}
-
-.v-input {
-  &__slot {
-=======
     &--highlighted {
       background-color:#20ce99;
       
@@ -240,7 +105,6 @@ export default {
     }
   }
   &__month {
->>>>>>> rozliczenia medycyna-pracy view changed to table
     display: flex;
     justify-content: space-between;
     align-items: center;
