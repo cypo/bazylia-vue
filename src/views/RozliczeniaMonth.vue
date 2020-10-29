@@ -68,3 +68,4 @@ export default {
   color: #20ce99;
 }
 </style>
+<style lang="scss" src='../scss/rozliczenia.scss'></style>

@@ -1,10 +1,10 @@
 <template>
   <v-container elevation-0 row justify-center>
     <div my-4 class="white component-wrapper">
-        <my-button fontColor="black" @click.native="goBack()" color="white"
+        <my-button fontColor="black" @click.native="goBack()" color="white" style="display: inline-block"
           >Wstecz</my-button
         >
-        <my-button @click.native="dialog = true" color="success">
+        <my-button @click.native="dialog = true" color="success" style="display: inline-block">
            Wystaw fakturę
         </my-button>
       <h1 class="rozliczenia__header">Rozliczenia > Medycyna pracy > {{ this.$route.params.month }} > {{ rozliczeniaFirma.nazwaFirmy }} </h1>
@@ -28,17 +28,18 @@
             <div>{{ wizyta.pacjent.imie }}</div>
             <div>{{ wizyta.pacjent.nazwisko }}</div>
             <div>{{ wizyta.usluga.nazwa }}</div>
-            <div>{{ wizyta.dataWizyty }}</div>
+            <div>{{ new Date(wizyta.dataWizyty).toISOString().substr(0, 10) }}</div>
             <div v-if="!wizyta.faktura">
             Wybierz
             </div>
-                                <div
-                            v-if="wizyta.faktura"
-                            class="patient__show-invoice"
-                          >
-                            <router-link :to="`/faktury/${wizyta.faktura}`"
-                              >Pokaż fakturę</router-link
-                            ></div>
+            <div
+              v-if="wizyta.faktura"
+              class="patient__show-invoice"
+            >
+              <router-link :to="`/faktury/${wizyta.faktura}`"
+                >Pokaż fakturę</router-link
+            >
+            </div>
           </li>
         </ul>
       </div>
@@ -244,3 +245,4 @@ Array.prototype.remove = function() {
     return this;
 };
 </script>
+<style lang="scss" src='../scss/rozliczenia.scss'></style>
