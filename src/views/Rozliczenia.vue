@@ -1,14 +1,19 @@
 <template>
   <v-container elevation-0 row justify-center>
     <div my-4 class="white component-wrapper">
-      <h2>Rozliczenia</h2>
-      <Loader v-if="isLoading" />
-      <v-card-text v-if="rozliczenia && !isLoading">
-        <v-expansion-panel my-2 class="patient elevation-0">
-          <v-expansion-panel-content
-            v-for="(rozliczenie, i) in rozliczenia"
-            :key="i"
+      <h1 class="rozliczenia__header">Rozliczenia - Medycyna pracy</h1>
+      <div class="rozliczenia">
+        <ul>
+          <li class="rozliczenia__month--header">
+            <div>Wybierz miesiąc</div>
+          </li>
+          <li
+            v-for="(miesiac) in rozliczenia.miesiace"
+            :key="miesiac"
+            class="rozliczenia__month"
+            @click="goToMonth(miesiac)"
           >
+<<<<<<< HEAD
             <template v-slot:header>
               <ul class="patient__header">
                 <li>{{ rozliczenie.firma.nazwa }}</li>
@@ -93,123 +98,13 @@
       <v-card-text v-if="brakDanychMessage">{{
         brakDanychMessage
       }}</v-card-text>
+=======
+            <div>{{ miesiac }}</div>
+          </li>
+        </ul>
+      </div>
+>>>>>>> rozliczenia medycyna-pracy view changed to table
     </div>
-
-    <!-- v-dialog ten sam co w RozliczeniaSpecjalistyka. wyrzucic do osobnego komponntu-->
-    <v-dialog v-model="dialog" width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-3" primary-title
-          >Wystawianie faktury</v-card-title
-        >
-
-        <v-container>
-          <h3>Sposób płatności</h3>
-          <v-radio-group v-model="sposobPlatnosciGroup">
-            <v-radio
-              v-for="item in sposobPlatnosci"
-              :key="item"
-              :label="`${item}`"
-              :value="item"
-            ></v-radio>
-          </v-radio-group>
-          <h3>Data wystawienia faktury</h3>
-          <v-flex xs6>
-            <v-menu
-              v-model="menu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              lazy
-              transition="scale-transition"
-              offset-y
-              full-width
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <div class="form__input-wrapper">
-                  <v-text-field
-                    v-model="doZafakturowania.dataFaktury"
-                    label="Wybierz datę"
-                    data-cy="date-picker"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </div>
-              </template>
-              <v-date-picker
-                v-model="doZafakturowania.dataFaktury"
-                no-title
-                locale="pl-PL"
-                @input="menu = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-flex>
-
-          <h3>Data wykonania usługi:</h3>
-
-          <div class="select-date">
-            <v-flex xs6>
-              <v-menu
-                v-model="menu2"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <div class="form__input-wrapper">
-                    <v-text-field
-                      v-model="doZafakturowania.dataSprzedazy"
-                      label="Wybierz datę"
-                      data-cy="date-picker"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </div>
-                </template>
-                <v-date-picker
-                  v-model="doZafakturowania.dataSprzedazy"
-                  no-title
-                  locale="pl-PL"
-                  @input="menu2 = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-checkbox
-              class="only-month-checkbox"
-              v-model="doZafakturowania.tylkoMiesiac"
-              label="Tylko miesiąc"
-            ></v-checkbox>
-          </div>
-
-          <h3>Termin płatności:</h3>
-          <v-radio-group v-model="terminPlatnosciGroup">
-            <v-radio
-              v-for="item in terminPlatnosci"
-              :key="item"
-              :label="`${item}`"
-              :value="item"
-            ></v-radio>
-          </v-radio-group>
-          <v-card-actions class="px-0 justify-center">
-            <my-button
-              color="white"
-              fontColor="black"
-              @click.native="dialog = false"
-              >Anuluj</my-button
-            >
-            <my-button
-              color="#20CE99"
-              fontColor="white"
-              @click.native="submitForInvoice(doZafakturowania)"
-              >Wystaw Fakturę</my-button
-            >
-          </v-card-actions>
-        </v-container>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -220,28 +115,12 @@ export default {
   data: () => ({
     isLoading: true,
     rozliczenia: false,
-    brakDanychMessage: false,
-    selected: [],
-    selectAll: false,
-    dialog: false,
-    menu: false,
-    menu2: false,
-    terminPlatnosci: [7, 14, 30],
-    terminPlatnosciGroup: '',
-    sposobPlatnosci: ['GOTOWKA', 'PRZELEW'],
-    sposobPlatnosciGroup: '',
-    doZafakturowania: {
-      wizyty: [],
-      terminPlatnosci: '',
-      sposobPlatnosci: '',
-      dataFaktury: new Date().toISOString().substr(0, 10),
-      dataSprzedazy: new Date().toISOString().substr(0, 10),
-      tylkoMiesiac: false
-    }
+    brakDanychMessage: false
   }),
   mounted: function() {
     apiService.getRozliczenia('medycyna-pracy').then(response => {
-      if (response.data.length) {
+      console.log(response.data);
+      if (response.data) {
         this.$store.commit('GET_ALL_ROZLICZENIA_FROM_DB', response.data)
         this.rozliczenia = this.$store.getters.getAllRozliczenia
         this.rozliczenia = this.rozliczenia.map(rozliczenie => {
@@ -267,12 +146,8 @@ export default {
       }
     })
   },
-  updated: function() {
-    this.doZafakturowania.terminPlatnosci = this.terminPlatnosciGroup
-    this.doZafakturowania.sposobPlatnosci = this.sposobPlatnosciGroup
-    this.doZafakturowania.rodzajDaty = this.rodzajDatyGroup
-  },
   methods: {
+<<<<<<< HEAD
     updateWizytyDoZafakturowania() {
       this.doZafakturowania.wizyty = this.selected
     },
@@ -300,31 +175,45 @@ export default {
           console.error('Cos nie tak z fakturami... przepraszamy.')
         }
       })
+=======
+    goToMonth(month) {
+      this.$router.push({ path: `/rozliczenia/medycyna-pracy/${month}` })
+>>>>>>> rozliczenia medycyna-pracy view changed to table
     }
   }
 }
 </script>
 
 <style lang="scss">
-.btns-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.select-date {
-  display: flex;
-  justify-content: space-between;
-
-  .only-month-checkbox {
-    .v-input__slot {
-      display: flex;
-      flex-direction: initial;
-      margin: 8px;
-    }
+.rozliczenia {
+  &__header {
+    padding: 20px 0px;
   }
-}
+  &__element--header,
+  &__element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid darkgrey;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    div {
+      width: 25%;
+      &:last-of-type {
+        text-align: right;
+      }
+    }
 
+    &:hover {
+      background-color: #eee;
+    }
+
+    &--header {
+      font-weight: bold;
+    }
+
+<<<<<<< HEAD
 .patient {
   &__show-invoice {
     display: flex;
@@ -341,8 +230,46 @@ export default {
 
 .v-input {
   &__slot {
+=======
+    &--highlighted {
+      background-color:#20ce99;
+      
+      &:hover {
+        background-color: #20ce99;
+    }
+    }
+  }
+  &__month {
+>>>>>>> rozliczenia medycyna-pracy view changed to table
     display: flex;
-    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid darkgrey;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    div {
+      width: 5%;
+      &:last-of-type {
+        text-align: right;
+      }
+    }
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &--header {
+      font-weight: bold;
+    }
+
+    &--highlighted {
+      background-color:#20ce99;
+      
+      &:hover {
+        background-color: #20ce99;
+    }
+    }
   }
 }
 

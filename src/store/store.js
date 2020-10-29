@@ -58,6 +58,7 @@ export default new Vuex.Store({
       faktura: ''
     },
     rozliczenia: {},
+    rozliczeniaFirma: {},
     faktura: null,
     companies: [],
     wizyty: []
@@ -83,6 +84,12 @@ export default new Vuex.Store({
     },
     getFaktura: state => {
       return state.faktura
+    },
+    getMonth: state => {
+      return state.month
+    },
+    getRozliczeniaFirma: state => {
+      return state.rozliczeniaFirma
     },
     getAllInvoices: state => {
       return state.invoices
@@ -165,6 +172,12 @@ export default new Vuex.Store({
     },
     GET_FAKTURA: (state, faktura) => {
       state.faktura = faktura
+    },
+    GET_MONTH: (state, month) => {
+      state.month = month
+    },
+    GET_ROZLICZENIA_FIRMA: (state, rozliczeniaFirma) => {
+      state.rozliczeniaFirma = rozliczeniaFirma
     },
     ADD_COMPANY: (state, company) => {
       state.companies.push(company)

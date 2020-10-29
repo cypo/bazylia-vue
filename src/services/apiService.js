@@ -147,5 +147,11 @@ export default {
         document.body.appendChild(fileLink)
         fileLink.click()
       })
+  },
+  getRozliczenieByMonth(month){
+    return axios.get(`${API.url}/rozliczenia/medycyna-pracy/${month}`);
+  },
+  getRozliczenieByFirma(month, firmaId){
+    return axios.get(`${API.url}/rozliczenia/medycyna-pracy/${month}/firma/${firmaId}`);
   }
 }

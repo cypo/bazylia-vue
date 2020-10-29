@@ -67,6 +67,18 @@ const router = new Router({
       component: () => import('./views/Rozliczenia.vue')
     },
     {
+      path: '/rozliczenia/medycyna-pracy/:month',
+      name: 'RozliczeniaMonth',
+      beforeEnter: guardMyroute,
+      component: () => import('./views/RozliczeniaMonth.vue')
+    },
+    {
+      path: '/rozliczenia/medycyna-pracy/:month/firma/:firmaId',
+      name: 'RozliczeniaFirma',
+      beforeEnter: guardMyroute,
+      component: () => import('./views/RozliczeniaFirma.vue')
+    },
+    {
       path: '/rozliczenia/specjalistyka',
       name: 'RozliczeniaSpecjalistyka',
       beforeEnter: guardMyroute,
