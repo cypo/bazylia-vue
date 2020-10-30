@@ -12,6 +12,7 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
       div {
+        width: 20%;
         &:last-of-type {
           text-align: right;
         }
