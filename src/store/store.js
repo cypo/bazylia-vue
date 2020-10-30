@@ -61,7 +61,8 @@ export default new Vuex.Store({
     rozliczeniaFirma: {},
     faktura: null,
     companies: [],
-    wizyty: []
+    wizyty: [],
+    month: {}
   },
   getters: {
     getPatients: state => {
