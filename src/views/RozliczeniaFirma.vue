@@ -12,11 +12,11 @@
       <div class="rozlcizenia">
         <ul>
           <li class="rozliczenia__element--header">
-            <div>Imię</div>
-            <div>Nazwisko</div>
-            <div>Usługa</div>
-            <div>Data wizyty</div>
-            <div>Dodaj do faktury</div>
+            <div style="width: 15%">Imię</div>
+            <div style="width: 15%">Nazwisko</div>
+            <div style="width: 40%">Usługa</div>
+            <div style="width: 15%">Data wizyty</div>
+            <div style="width: 15%">Dodaj do faktury</div>
           </li>
           <li
             v-for="(wizyta) in rozliczeniaFirma.wizyty"
@@ -25,20 +25,13 @@
             class="rozliczenia__element"
             @click="select(wizyta)"
           >
-            <div>{{ wizyta.pacjent.imie }}</div>
-            <div>{{ wizyta.pacjent.nazwisko }}</div>
-            <div>{{ wizyta.usluga.nazwa }}</div>
-            <div>{{ new Date(wizyta.dataWizyty).toISOString().substr(0, 10) }}</div>
-            <div v-if="!wizyta.faktura">
-            Wybierz
-            </div>
-            <div
-              v-if="wizyta.faktura"
-              class="patient__show-invoice"
-            >
-              <router-link :to="`/faktury/${wizyta.faktura}`"
-                >Pokaż fakturę</router-link
-            >
+            <div style="width: 15%">{{ wizyta.pacjent.imie }}</div>
+            <div style="width: 15%">{{ wizyta.pacjent.nazwisko }}</div>
+            <div style="width: 40%">{{ wizyta.usluga.nazwa }}</div>
+            <div style="width: 15%">{{ new Date(wizyta.dataWizyty).toISOString().substr(0, 10) }}</div>
+            <div style="width: 15%" v-if="!wizyta.faktura">Wybierz</div>
+            <div style="width: 15%" v-if="wizyta.faktura">
+              <router-link :to="`/faktury/${wizyta.faktura}`">Pokaż fakturę</router-link>
             </div>
           </li>
         </ul>
