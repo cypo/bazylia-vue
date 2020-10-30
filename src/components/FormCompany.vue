@@ -296,7 +296,7 @@ export default {
     addNewCompany(company) {
       apiService.addCompany(company).then(response => {
         const firmaId = response.headers.location.match(
-          /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/
+          /[a-f\d]{24}$/i
         )[0]
         this.getCompany(firmaId)
         this.companyAdded = true
