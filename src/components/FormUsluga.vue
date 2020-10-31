@@ -27,7 +27,7 @@
       <v-radio
         v-for="usluga in filteredUslugi"
         :key="usluga.nazwa"
-        :label="`${usluga.nazwa} Cena:${usluga.cenaZwykla}`"
+        :label="usluga.nazwa"
         :value="usluga"
         @click.native="wybierzUsluge(usluga)"
       ></v-radio>
