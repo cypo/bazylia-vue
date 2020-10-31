@@ -50,7 +50,7 @@
 
     <v-layout
       v-if="
-        typeOfSummary == typWizytyConst.SPECJALISTYKA && wizyta.pacjent.firma
+        typeOfSummary == typWizytyConst.SPECJALISTYKA
       "
       row
       wrap
