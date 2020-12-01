@@ -184,7 +184,7 @@
                       <li>Telefon: {{ wizyta.pacjent.numerTelefonu }}</li>
                       <li>Numer karty: {{ wizyta.pacjent.numerKarty }}</li>
                       <li v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
-                        Data orzeczenia:
+                        <div style="float: left; padding-top: 10px"><b>Data orzeczenia:</b></div>
 
                         <v-menu
                           v-model="wizyta.pacjent.dataOrzeczeniaMenu"
@@ -200,8 +200,8 @@
                             <v-text-field
                               v-model="wizyta.pacjent.dataOrzeczenia"
                               class="date-input"
-                              prepend-icon="event"
-                              height="20px"
+                              :rules="rules"
+                              label="Wybierz datę"
                               readonly
                               v-on="on"
                             ></v-text-field>
@@ -246,14 +246,13 @@
                   </div>
                 </div>
                 <div v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
-                  <span class="decyzja">Decyzja:</span>
-                  {{ mapDecyzjaLabelToText(wizyta.pacjent.decyzja) }}
+                  <span class="decyzja"><b>Decyzja:</b></span>
+                  
                   <v-select
-                    v-model="wizyta.pacjent.decyzja"
+                    value='dupa'
                     :items="decyzje"
-                    menu-props="auto"
-                    label="Wybierz decyzje"
-                    prepend-icon="map"
+                    v-model=wizyta.pacjent.decyzja
+                    label="Wybierz decyzję"
                     return-object
                     @change="
                       submitDecyzja(
@@ -344,7 +343,6 @@ export default {
     submitDecyzja(pacjentID, decyzja) {
       apiService.submitDecyzja(pacjentID, decyzja).then(() => {
         this.getCounter()
-
         if (this.lastRequest === 'GET_ALL_WIZYTY') {
           this.getAllWizyty()
         } else {
@@ -414,6 +412,9 @@ export default {
         this.saveVisits(response)
         this.lastRequest = 'GET_ALL_WIZYTY'
       })
+    },
+    getLabel(decyzja){
+      return decyzja ? decyzja.label : "dupa";
     }
   },
   computed: {
@@ -512,6 +513,7 @@ export default {
 }
 .decyzja {
   font-size: 16px;
+  float: left;
 }
 
 .wizyta {
