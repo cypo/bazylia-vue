@@ -59,6 +59,7 @@ export default new Vuex.Store({
     },
     rozliczenia: {},
     rozliczeniaFirma: {},
+    rozliczeniaPacjent: {},
     faktura: null,
     companies: [],
     wizyty: [],
@@ -91,6 +92,9 @@ export default new Vuex.Store({
     },
     getRozliczeniaFirma: state => {
       return state.rozliczeniaFirma
+    },
+    getRozliczeniaPacjent: state => {
+      return state.rozliczeniaPacjent
     },
     getAllInvoices: state => {
       return state.invoices
@@ -179,6 +183,9 @@ export default new Vuex.Store({
     },
     GET_ROZLICZENIA_FIRMA: (state, rozliczeniaFirma) => {
       state.rozliczeniaFirma = rozliczeniaFirma
+    },
+    GET_ROZLICZENIA_PACJENT: (state, rozliczeniaPacjent) => {
+      state.rozliczeniaPacjent = rozliczeniaPacjent
     },
     ADD_COMPANY: (state, company) => {
       state.companies.push(company)

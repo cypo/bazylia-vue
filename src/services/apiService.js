@@ -153,5 +153,8 @@ export default {
   },
   getRozliczenieByFirma(month, firmaId){
     return axios.get(`${API.url}/rozliczenia/medycyna-pracy/${month}/firma/${firmaId}`);
+  },
+  getRozliczeniaByPacjentId(pacjentId){
+    return axios.get(`${API.url}/rozliczenia/specjalistyka/${pacjentId}`);
   }
 }

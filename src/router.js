@@ -85,6 +85,12 @@ const router = new Router({
       component: () => import('./views/RozliczeniaSpecjalistyka.vue')
     },
     {
+      path: '/rozliczenia/specjalistyka/:pacjent',
+      name: 'RozliczeniaPacjent',
+      beforeEnter: guardMyroute,
+      component: () => import('./views/RozliczeniaSpecjalistykaPacjent.vue')
+    },
+    {
       path: '/specjalistyka',
       name: 'Specjalistyka',
       beforeEnter: guardMyroute,
