@@ -184,7 +184,8 @@
                       <li>Telefon: {{ wizyta.pacjent.numerTelefonu }}</li>
                       <li>Numer karty: {{ wizyta.pacjent.numerKarty }}</li>
                       <li v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
-                        <div style="float: left; padding-top: 10px"><b>Data orzeczenia:</b></div>
+                        <div style="float: left; padding-top: 10px"> 
+                          <span :class="wizyta.pacjent.dataOrzeczeniaUpdated ? 'data' : 'data-missing'"><b>Data orzeczenia:</b></span></div>
 
                         <v-menu
                           v-model="wizyta.pacjent.dataOrzeczeniaMenu"
@@ -201,7 +202,7 @@
                               v-model="wizyta.pacjent.dataOrzeczenia"
                               class="date-input"
                               :rules="rules"
-                              label="Wybierz datę"
+                              style="padding-top: 22px; padding-left: 0px; font-weight:bold"
                               readonly
                               v-on="on"
                             ></v-text-field>
@@ -246,18 +247,18 @@
                   </div>
                 </div>
                 <div v-if="wizyta.typWizyty == 'MEDYCYNA_PRACY'">
-                  <span class="decyzja"><b>Decyzja:</b></span>
-                  
+                  <span :class="
+                    wizyta.pacjent.decyzjaUpdated ? 'decyzja' : 'decyzja-missing'"><b>Decyzja:</b></span>
                   <v-select
-                    value='dupa'
                     :items="decyzje"
                     v-model=wizyta.pacjent.decyzja
-                    label="Wybierz decyzję"
+                    style="font-weight:bold;"
                     return-object
+                    outlined
                     @change="
                       submitDecyzja(
                         wizyta.pacjent.pacjentId,
-                        wizyta.pacjent.decyzja.label
+                        wizyta.pacjent.decyzja.value
                       )
                     "
                   ></v-select>
@@ -298,7 +299,7 @@
 
 <script>
 import apiService from '@/services/apiService.js'
-import { decyzje, decyzje2 } from '@/constants/constants'
+import { decyzje } from '@/constants/constants'
 
 export default {
   data: () => ({
@@ -368,11 +369,6 @@ export default {
         this.incompleteCounter = response.data.counter
       })
     },
-
-    mapDecyzjaLabelToText(decyzjaLabel) {
-      return decyzje2[decyzjaLabel]
-    },
-
     getIncompleteVisits() {
       apiService.getIncompleteVisits().then(response => {
         this.saveVisits(response)
@@ -514,8 +510,31 @@ export default {
 .decyzja {
   font-size: 16px;
   float: left;
+  margin:auto;
+  color:green;
+  padding-top: 20px;
+  padding-right: 95px;
 }
-
+.decyzja-missing {
+  font-size: 16px;
+  float: left;
+  color: rgb(255, 0, 0);
+  padding-top: 20px;
+  padding-right: 95px;
+}
+.data {
+  font-size: 16px;
+  float: left;
+  margin:auto;
+  color:green;
+  padding-top: 20px;
+}
+.data-missing {
+  font-size: 16px;
+  float: left;
+  color: rgb(255, 0, 0);
+  padding-top: 20px;
+}
 .wizyta {
   &__header {
     font-size: 18px;
