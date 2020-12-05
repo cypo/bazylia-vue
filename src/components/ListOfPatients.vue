@@ -20,12 +20,17 @@
           :data-cy="`patient`"
         >
           <template v-slot:header>
-            <ul class="patient__header patient__header--bold">
-              <li>{{ patient.imie }}</li>
-              <li>{{ patient.nazwisko }}</li>
-              <li>{{ patient.pesel }}</li>
-              <li class="patient__details-element">Szczegóły</li>
-            </ul>
+            <a
+              :href="'#scroll-' + patient.pacjentId"
+              v-smooth-scroll="{ duration: 1000, offset: 200 }"
+            >
+              <ul class="patient__header patient__header--bold">
+                <li>{{ patient.imie }}</li>
+                <li>{{ patient.nazwisko }}</li>
+                <li>{{ patient.pesel }}</li>
+                <li class="patient__details-element">Szczegóły</li>
+              </ul>
+            </a>
           </template>
           <v-card>
             <div class="patient__desc">
@@ -69,13 +74,13 @@
                   <span>Data orzeczenia: </span>
                   <span>{{ patient.dataOrzeczenia }}</span>
                 </li>
-                                <li>
+                <li>
                   <span>Decyzja: </span>
                   <span>{{ patient.decyzja }}</span>
                 </li>
               </ul>
             </div>
-
+            <div :id="'scroll-'+patient.pacjentId"></div>
             <div class="patient__btns">
               <RegistrationPopUp :patient="patient"></RegistrationPopUp>
               <DeletePatientPopUp :patient="patient"
@@ -91,16 +96,16 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import RegistrationPopUp from '@/components/RegistrationPopUp'
 import DeletePatientPopUp from '@/components/DeletePatientPopUp'
+
 export default {
   components: {
     RegistrationPopUp,
-    DeletePatientPopUp
+    DeletePatientPopUp,
   },
-  props: ['patients', 'filteredPatients', 'visiblePatients', 'isLoading']
+  props: ['patients', 'filteredPatients', 'visiblePatients', 'isLoading'],
 }
 </script>
 
@@ -159,6 +164,10 @@ export default {
   &__details-element {
     text-align: right;
     padding-right: 3px;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 }
 </style>

@@ -11,12 +11,13 @@ import './style/style.styl'
 import './style/variables.scss'
 import MyButton from '@/components/MyButton'
 import Loader from '@/components/Loader'
+import vueSmoothScroll from 'vue-smooth-scroll'
 
 Vue.component('MyButton', MyButton)
 Vue.component('Loader', Loader)
 
 Vue.use(VueI18n)
-
+Vue.use(vueSmoothScroll)
 Vue.config.productionTip = false
 
 axios.interceptors.request.use(

@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar id="navbar" class="navbar">
+  <v-toolbar id="navbar" class="navbar" fixed="top">
     <v-tab :class="{ active: path == '/' }" to="/">Wyszukaj Pacjenta</v-tab>
     <v-tab :class="{ active: path == '/add-patient' }" to="/add-patient"
       >Dodaj Pacjenta</v-tab

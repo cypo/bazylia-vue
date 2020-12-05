@@ -65,6 +65,37 @@
       }
       }
     }
+    &__pacjent {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid darkgrey;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      div {
+        width: 100%;
+        &:last-of-type {
+          text-align: left;
+        }
+      }
+  
+      &:hover {
+        background-color: #eee;
+      }
+  
+      &--header {
+        font-weight: bold;
+      }
+  
+      &--highlighted {
+        background-color:#20ce99;
+        
+        &:hover {
+          background-color: #20ce99;
+      }
+      }
+    }
   }
   
   .do-rozliczenia {
