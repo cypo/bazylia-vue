@@ -1,8 +1,11 @@
-FROM node:8.12-alpine
-RUN apk add g++ make python
-EXPOSE 4000
-RUN mkdir /app
+FROM node:latest as build-stage
 WORKDIR /app
-COPY . /app
+COPY package*.json ./
 RUN npm install
-CMD ["npm", "run", "serve", "--", "--port=4000"]
+COPY ./ .
+RUN npm run build
+
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf

@@ -9,7 +9,6 @@ module.exports = {
     'plugin:vue/essential',
     'plugin:prettier/recommended',
     'eslint:recommended',
-    'plugin:cypress/recommended'
   ],
 
   rules: {
