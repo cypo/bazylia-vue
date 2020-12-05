@@ -50,6 +50,13 @@
                   <span>Telefon: </span>
                   <span>{{ patient.numerTelefonu }}</span>
                 </li>
+              </ul>
+
+              <ul ref="patient" class="patient__desc-col">
+                <li v-if="patient.firma">
+                  <span>Firma: </span>
+                  <span>{{ patient.firma.nazwa }}</span>
+                </li>
                 <li>
                   <span>Stanowisko: </span>
                   <span>{{ patient.stanowisko }}</span>
@@ -62,13 +69,9 @@
                   <span>Data orzeczenia: </span>
                   <span>{{ patient.dataOrzeczenia }}</span>
                 </li>
-              </ul>
-
-              <!-- FIRMA -->
-              <ul ref="patient" class="patient__desc-col">
-                <li v-if="patient.firma">
-                  <span>Firma: </span>
-                  <span>{{ patient.firma.nazwa }}</span>
+                                <li>
+                  <span>Decyzja: </span>
+                  <span>{{ patient.decyzja }}</span>
                 </li>
               </ul>
             </div>
