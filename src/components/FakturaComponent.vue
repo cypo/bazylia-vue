@@ -1,6 +1,6 @@
 <template>
   <v-container class="container">
-    <v-layout row justify-center>
+    <v-layout row justify-center style="padding-top: 50px;">
       <my-button fontColor="black" @click.native="goBack()" color="white"
         >Wstecz</my-button
       >
